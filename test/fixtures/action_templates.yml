@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+# == Schema Information
+#
+# Table name: action_templates
+#
+#  id               :integer          not null, primary key
+#  description      :string
+#  target           :integer
+#  target_type      :string
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  task_template_id :integer          not null
+#
+# Indexes
+#
+#  index_action_templates_on_task_template_id  (task_template_id)
+#
+# Foreign Keys
+#
+#  task_template_id  (task_template_id => task_templates.id)
+#
+one:
+  task_template: one
+  description: MyString
+  target: 1
+  target_type: MyString
+
+two:
+  task_template: two
+  description: MyString
+  target: 1
+  target_type: MyString

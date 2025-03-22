@@ -8,6 +8,7 @@ class CreateTaskTemplates < ActiveRecord::Migration[8.0]
       t.boolean :active
       t.string :reminder_time
       t.string :task_category_id
+      t.string :goal_type
 
       t.timestamps
     end
