@@ -4,6 +4,7 @@ class CreateTaskInstances < ActiveRecord::Migration[8.0]
       t.string :state
       t.date :start_date
       t.date :due_date
+      t.date :completed_at
       t.string :description
       t.string :reminder_time
       t.references :task_template, null: false, foreign_key: true

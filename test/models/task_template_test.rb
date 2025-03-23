@@ -3,7 +3,8 @@
 # Table name: task_templates
 #
 #  id               :integer          not null, primary key
-#  active           :boolean
+#  active           :boolean          default(TRUE)
+#  days_to_complete :integer
 #  description      :string
 #  end_date         :date
 #  first_date       :date

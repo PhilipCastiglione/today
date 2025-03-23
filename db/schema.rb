@@ -38,6 +38,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
     t.string "state"
     t.date "start_date"
     t.date "due_date"
+    t.date "completed_at"
     t.string "description"
     t.string "reminder_time"
     t.integer "task_template_id", null: false
@@ -52,7 +53,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
     t.date "end_date"
     t.string "description"
     t.integer "repeat_days"
-    t.boolean "active"
+    t.integer "days_to_complete"
+    t.boolean "active", default: true
     t.string "reminder_time"
     t.string "task_category_id"
     t.string "goal_type"

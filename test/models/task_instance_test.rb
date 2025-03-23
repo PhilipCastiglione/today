@@ -3,6 +3,7 @@
 # Table name: task_instances
 #
 #  id               :integer          not null, primary key
+#  completed_at     :date
 #  description      :string
 #  due_date         :date
 #  goal_type        :string
