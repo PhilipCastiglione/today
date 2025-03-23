@@ -23,6 +23,22 @@
 #  task_instance_id    (task_instance_id => task_instances.id)
 #
 class ActionInstance < ApplicationRecord
+  include TargetType
+
   belongs_to :action_template
   belongs_to :task_instance
+
+  validates_presence_of :description
+  validates_numericality_of :target, greater_than_or_equal_to: 0
+  validates_numericality_of :progress, greater_than_or_equal_to: 0
+
+  def set_progress(progress)
+    self.progress = progress
+    task_instance.update_state if save
+    self
+  end
+
+  def completed?
+    satisfied?(target, progress)
+  end
 end
