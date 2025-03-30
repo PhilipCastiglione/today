@@ -1,0 +1,9 @@
+<section class="task-templates">
+    <div>
+        <%= render @task_templates %>
+        <% if @task_templates.empty? %>
+            <p class="empty">No tasks found.</p>
+        <% end %>
+    </div>
+</section>
+

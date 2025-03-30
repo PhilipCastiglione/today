@@ -22,3 +22,22 @@ Things you may want to cover:
 * Deployment instructions
 
 * ...
+
+## TODO
+
+* build UI for templates
+    * edit/update fields
+    * action templates
+        * add
+        * remove
+        * update
+    * make it pretty
+    * create new
+    * how to sort sensibly?
+* test everything
+    * confirm includes to prevent n + 1 queries
+* deployment stuff, kamal etc
+* test everything on phone
+* do i need the refresh button?
+* do i want forward/back date buttons?
+* reminders / web reminders

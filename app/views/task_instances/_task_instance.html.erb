@@ -1,0 +1,32 @@
+<%= turbo_frame_tag task_instance do %>
+    <% color = task_instance.skipped? ? "skip" : task_instance.task_template.task_category.color %>
+    <div data-controller="task-instance" class="card task-instance" style="border-color:var(--<%= color %>-dark);background-color:var(--<%= color %>-light);color:var(--<%= color %>-dark);">
+        <% if task_instance.completed? %>
+            <div class="state-container">
+                <div class="state-icon" style="color:var(--<%= color %>-dark);">✔</div>
+            </div>
+        <% elsif task_instance.failed? %>
+            <div class="state-container">
+                <div class="state-icon" style="color:var(--<%= color %>-dark);">✗</div>
+            </div>
+        <% end %>
+        <div class="top-row">
+            <div style="color:var(--<%= color %>);"><%= task_instance.task_template.task_category.label %></div>
+            <div data-action="<%= "click->task-instance#toggle" unless task_instance.completed? %>" class="due-date"><%= task_instance.due_date_display %></div>
+        </div>
+        <div class="container">
+            <div class="schedule-actions hidden" data-task-instance-target="scheduleActions">
+                <%= form_with model: task_instance do |form| %>
+                    <%= form.hidden_field :state, value: task_instance.skipped? ? TaskInstance::STATES[:active] : TaskInstance::STATES[:skipped] %>
+                    <%= form.button class: "skip-button", style: "background-color:var(--#{color}-dark);color:var(--#{color}-light)" do %>
+                        <%= task_instance.skipped? ? "Unskip" : "Skip" %>
+                    <% end %>
+                <% end %>
+                <%= form_with model: task_instance do |form| %>
+                    <%= form.date_field :due_date, style:"background-color:var(--#{color}-dark);color:var(--#{color}-light);", class: "defer-form-field", onchange: "this.form.requestSubmit()" %>
+                <% end %>
+            </div>
+            <%= render task_instance.action_instances %>
+        </div>
+    </div>
+<% end %>

@@ -1,0 +1,335 @@
+nav {
+    font-size: 1.25rem;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--gray-light);
+    
+    ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+    }
+    
+    li > * {
+        display: inline-block;
+        padding: 12px;
+        font-weight: 600;
+    }
+    
+    span {
+        text-decoration: underline;
+        color: var(--gray-dark);
+        
+        &.unauthenticated {
+            text-decoration: none;
+            color: var(--gray);
+        }
+    }
+}
+
+.flash {
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--gray-light);
+    }
+
+    > * {
+        padding: 8px;
+        margin: 6px 0;
+        border-radius: 4px;
+    }
+}
+
+.login-form {
+    margin-top: 24px;
+
+    .field-row {
+        margin-bottom: 12px;
+
+        label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+        }
+    }
+
+    input[type="submit"] {
+        margin-top: 12px;
+        padding: 12px;
+        width: 100%;
+        background-color: var(--gray-dark);
+        color: var(--white);
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
+}
+
+.card {
+    position:relative;
+    border-color: var(--gray-light);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+    font-size: 0.8rem;
+    line-height: 1;
+}
+
+.task-instances {
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        text-align: center;
+
+        > * {
+            height: 36px;
+        }
+
+        .spacer,
+        .reload {
+            width: 36px;
+        }
+
+        .date-control {
+            flex-grow: 1;
+
+            input {
+                padding: 4px;
+                margin: 2px;
+            }
+        }
+
+        .reload {
+            font-size: 1.8rem;
+            line-height: 1;
+            cursor: pointer;
+            border: 1px solid var(--gray-dark);
+            color: var(--gray-dark);
+            background-color: var(--gray-light);
+            border-radius: 4px;
+            padding: 0 0 0 2px;
+            
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+    }
+
+    .empty {
+        text-align: center;
+        margin-top: 24px;
+        font-style: italic;
+    }
+
+    .task-instance {
+        .state-container {
+            position: absolute;
+            left: 25%;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            .state-icon {
+                font-size: 3.5rem;
+                opacity: 0.3;
+            }
+        }
+
+        .top-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+
+            .due-date {
+                font-size: 1rem;
+                cursor: pointer;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 4px;
+            place-items: center;
+            justify-content: end;
+
+            &.hidden {
+                display: none;
+            }
+
+            .skip-button {
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+                padding: 4px 8px;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+
+            .defer-form-field {
+                border: none;
+                cursor: pointer;
+                border-radius: 4px;
+                padding: 4px 8px;
+
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .action-instance {
+            display: flex;
+            place-items: end;
+            gap: 8px;
+
+            .completion {
+                font-size: 1.25rem;
+                font-weight: 600;
+                padding: 4px;
+                border: none;
+                background: none;
+                color: inherit;
+
+                &:hover {
+                    cursor: pointer;
+                    opacity: 0.6;
+                }
+            }
+
+            .details {
+                flex-grow: 1;
+            }
+
+            .action-description {
+                margin-bottom: 4px;
+            }
+
+            .progress-bar-container {
+                width: 100%;
+                border-style: solid;
+                border-width: 1px;
+                
+                .progress-bar {
+                    height: 12px;
+                    padding-bottom: 2px;
+                }
+            }
+
+            .progress {
+                text-align: center;
+                min-width: 65px;
+
+                .progress-form {
+                    display: inline;
+                    
+                    .progress-form-field {
+                        cursor: pointer;
+                        background: none;
+                        border: none;
+                        width: 30px;
+                        appearance: textfield;
+                        -moz-appearance: textfield;
+                        text-align: right;
+                        color: inherit;
+                        &::-webkit-inner-spin-button,
+                        &::-webkit-outer-spin-button {
+                            -webkit-appearance: none;
+                            margin: 0;
+                        }
+
+                        &:hover {
+                            opacity: 0.6;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.task-templates {
+    .empty {
+        text-align: center;
+        margin-top: 24px;
+        font-style: italic;
+    }
+
+    .task-template {
+        label {
+            cursor: pointer;
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+
+        .date-field {
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 4px 8px;
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+
+        .number-field {
+            cursor: pointer;
+            background: none;
+            border: none;
+            width: 100%;
+            appearance: textfield;
+            -moz-appearance: textfield;
+            color: inherit;
+            &::-webkit-inner-spin-button,
+            &::-webkit-outer-spin-button {
+                -webkit-appearance: none;
+                margin: 0;
+            }
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+
+        .action-button {
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            padding: 4px 8px;
+
+            &:hover {
+                opacity: 0.6;
+            }
+        }
+    }
+}

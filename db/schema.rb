@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
+ActiveRecord::Schema[8.0].define(version: 2025_03_25_055049) do
   create_table "action_instances", force: :cascade do |t|
     t.integer "action_template_id", null: false
     t.integer "task_instance_id", null: false
@@ -34,12 +34,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
     t.index ["task_template_id"], name: "index_action_templates_on_task_template_id"
   end
 
+  create_table "sessions", force: :cascade do |t|
+    t.integer "user_id", null: false
+    t.string "ip_address"
+    t.string "user_agent"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_sessions_on_user_id"
+  end
+
   create_table "task_instances", force: :cascade do |t|
     t.string "state"
     t.date "start_date"
     t.date "due_date"
     t.date "completed_at"
-    t.string "description"
     t.string "reminder_time"
     t.integer "task_template_id", null: false
     t.string "goal_type"
@@ -51,7 +59,6 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
   create_table "task_templates", force: :cascade do |t|
     t.date "first_date"
     t.date "end_date"
-    t.string "description"
     t.integer "repeat_days"
     t.integer "days_to_complete"
     t.boolean "active", default: true
@@ -62,8 +69,17 @@ ActiveRecord::Schema[8.0].define(version: 2025_03_22_012529) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "users", force: :cascade do |t|
+    t.string "email_address", null: false
+    t.string "password_digest", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email_address"], name: "index_users_on_email_address", unique: true
+  end
+
   add_foreign_key "action_instances", "action_templates"
   add_foreign_key "action_instances", "task_instances"
   add_foreign_key "action_templates", "task_templates"
+  add_foreign_key "sessions", "users"
   add_foreign_key "task_instances", "task_templates"
 end

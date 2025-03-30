@@ -4,7 +4,6 @@
 #
 #  id               :integer          not null, primary key
 #  completed_at     :date
-#  description      :string
 #  due_date         :date
 #  goal_type        :string
 #  reminder_time    :string
@@ -26,7 +25,9 @@ class TaskInstance < ApplicationRecord
   include GoalType
 
   belongs_to :task_template
-  has_many :action_instances
+  has_many :action_instances, dependent: :destroy
+
+  after_update :update_state
 
   STATES = {
     active: "active",
@@ -35,37 +36,42 @@ class TaskInstance < ApplicationRecord
     failed: "failed"
   }.freeze
 
-  validates_presence_of :description
   validates_presence_of :start_date
   validates_presence_of :due_date
   validates :state, inclusion: STATES.values
-  validates :one_or_more_action_instances
+  validate :one_or_more_action_instances
 
   STATES.each do |state, _|
     define_method("#{state}?") do
-      self.state == state
+      self.state == STATES[state]
     end
   end
 
-  def skip
-    update(state: STATES[:skipped])
+  def due_date_display
+    if due_date == Date.today
+      "Today"
+    elsif due_date == Date.tomorrow
+      "Tomorrow"
+    else
+      due_date.strftime("%d %b") # dd Mmm
+    end
   end
 
   def update_state
     completed_date = Date.today > due_date ? due_date : Date.today
     case state
     when STATES[:active]
-      if satisfied?(action_instances)
+      if satisfied?
         update(state: STATES[:completed], completed_at: completed_date)
       elsif Date.today > due_date
         update(state: STATES[:failed], completed_at: nil)
       end
     when STATES[:skipped]
-      if satisfied?(action_instances)
+      if satisfied?
         update(state: STATES[:completed], completed_at: completed_date)
       end
     when STATES[:completed]
-      if !satisfied?(action_instances)
+      if !satisfied?
         if Date.today > due_date
           update(state: STATES[:failed], completed_at: nil)
         else
@@ -73,7 +79,7 @@ class TaskInstance < ApplicationRecord
         end
       end
     when STATES[:failed]
-      if satisfied?(action_instances)
+      if satisfied?
         update(state: STATES[:completed], completed_at: completed_date)
       elsif Date.today <= due_date
         update(state: STATES[:active], completed_at: nil)
@@ -82,6 +88,15 @@ class TaskInstance < ApplicationRecord
   end
 
   private
+
+  def satisfied?
+    case goal_type
+    when GOAL_TYPES[:all]
+      action_instances.all?(&:completed?)
+    when GOAL_TYPES[:one]
+      action_instances.any?(&:completed?)
+    end
+  end
 
   def one_or_more_action_instances
     errors.add(:base, "Task instance must have at least one action instance") if action_instances.empty?

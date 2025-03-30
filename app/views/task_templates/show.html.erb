@@ -1,0 +1,5 @@
+<% if @task_template.destroyed? %>
+    <%= turbo_frame_tag @task_template %>
+<% else %>
+    <%= render @task_template %>
+<% end %>

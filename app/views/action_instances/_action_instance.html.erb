@@ -1,0 +1,30 @@
+<%= turbo_frame_tag action_instance do %>
+    <% color = action_instance.task_instance.skipped? ? "skip" : action_instance.task_instance.task_template.task_category.color %>
+    <div class="action-instance">
+        <%= form_with model: action_instance do |form| %>
+            <%= form.hidden_field :progress, value: action_instance.progress == action_instance.target ? 0 : action_instance.target %>
+            <%= form.button class: "completion", style: "color:var(--#{color});" do %>
+                <% if action_instance.task_instance.goal_type == GoalType::GOAL_TYPES[:all] %>
+                    <%= action_instance.completed? ? "☑" : "☐" %>
+                <% elsif action_instance.task_instance.goal_type == GoalType::GOAL_TYPES[:one] %>
+                    <%= action_instance.completed? ? "◉" : "◎" %>
+                <% end %>
+            <% end %>
+        <% end %>
+        <div class="details <%= action_instance.completed? ? "completed" : "" %>">
+            <div class="action-description">
+                <%= action_instance.description %>
+            </div>
+            <div class="progress-bar-container" style="border-color:var(--<%= color %>-dark);">
+                <div class="progress-bar" style="background-color:var(--<%= color %>);width: <%= [action_instance.progress * 100.0 / action_instance.target, 100.0].min %>%;"></div>
+            </div>
+        </div>
+        <div class="progress">
+            <%= form_with model: action_instance, class: "progress-form" do |form| %>
+                <%= form.number_field :progress, step: 1, minimum: 0, class: "progress-form-field", onchange: "this.form.requestSubmit()" %>
+            <% end %>
+            /
+            <%= action_instance.target %>
+        </div>
+    </div>
+<% end %>

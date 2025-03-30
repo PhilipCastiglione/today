@@ -7,22 +7,50 @@
     <meta name="mobile-web-app-capable" content="yes">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
-
     <%= yield :head %>
-
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
-
-    <link rel="icon" href="/icon.png" type="image/png">
-    <link rel="icon" href="/icon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/icon.png">
-
+    <link rel="icon" href="/favicon-32x32.png" type="image/png">
+    <link rel="icon" href="/favicon.ico" type="image/ico">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <link rel="icon" sizes="192x192" href="/android-chrome-192x192.png">
+    <link rel="icon" sizes="512x512" href="/android-chrome-512x512.png">
     <%# Includes all stylesheet files in app/assets/stylesheets %>
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>
-
   <body>
-    <%= yield %>
+    <main>
+      <nav>
+        <ul>
+          <li>
+            <% if !authenticated? %>
+              <span class="unauthenticated">Tasks</span>
+            <% elsif current_page?(root_path) %>
+              <span>Tasks</span>
+            <% else %>
+              <a href="<%= root_path %>">Tasks</a>
+            <% end %>
+          </li>
+          <li>
+            <% if !authenticated? %>
+              <span class="unauthenticated">Templates</span>
+            <% elsif current_page?(task_templates_path) %>
+              <span>Templates</span>
+            <% else %>
+              <a href="<%= task_templates_path %>">Templates</a>
+            <% end %>
+          </li>
+        </ul>
+      </nav>
+      <div data-controller="flash">
+        <div data-action="click->flash#close" class="flash">
+          <% flash.each do |name, msg| %>
+            <%= content_tag :div, msg, class: name %>
+          <% end %>
+        </div>
+      </div>
+      <%= yield %>
+    </main>
   </body>
 </html>

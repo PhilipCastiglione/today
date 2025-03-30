@@ -1,4 +1,15 @@
-# production:
+development:
+  tomorrow_job:
+    class: TomorrowJob
+    queue: background
+    schedule: at midnight every day
+
+production:
+  tomorrow_job:
+    class: TomorrowJob
+    queue: background
+    schedule: at midnight every day
+
 #   periodic_cleanup:
 #     class: CleanSoftDeletedRecordsJob
 #     queue: background

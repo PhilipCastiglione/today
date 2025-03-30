@@ -32,13 +32,22 @@ class ActionInstance < ApplicationRecord
   validates_numericality_of :target, greater_than_or_equal_to: 0
   validates_numericality_of :progress, greater_than_or_equal_to: 0
 
-  def set_progress(progress)
-    self.progress = progress
-    task_instance.update_state if save
-    self
-  end
+  around_update :update_task_instance_state
 
   def completed?
-    satisfied?(target, progress)
+    case target_type
+    when TARGET_TYPES[:at_least]
+      progress >= target
+    when TARGET_TYPES[:less_than]
+      progress < target && Date.today > task_instance.due_date
+    end
+  end
+
+  private
+
+  def update_task_instance_state
+    progress_did_change = progress_changed?
+    yield
+    task_instance.update_state if progress_did_change
   end
 end

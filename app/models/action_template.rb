@@ -22,7 +22,7 @@ class ActionTemplate < ApplicationRecord
   include TargetType
 
   belongs_to :task_template
-  has_many :action_instances
+  has_many :action_instances, dependent: :destroy
 
   validates_presence_of :description
   validates_numericality_of :target, greater_than_or_equal_to: 0

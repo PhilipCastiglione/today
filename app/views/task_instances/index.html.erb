@@ -1,0 +1,17 @@
+<section class="task-instances">
+    <div class="controls">
+        <div class="spacer"></div>
+        <div class="date-control">
+            <%= form_with url: root_path, method: :get do |form| %>
+                <%= form.date_field :date, value: @date&.to_formatted_s(:db), onchange: "this.form.requestSubmit()" %>
+            <% end %>
+        </div>
+        <div class="reload" onclick="location.reload()" ontouchstart="location.reload()">⟳</div>
+    </div>
+    <div>
+        <%= render @task_instances %>
+        <% if @task_instances.empty? %>
+        <p class="empty">No tasks found.</p>
+        <% end %>
+    </div>
+</section>

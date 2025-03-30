@@ -1,0 +1,32 @@
+<%= turbo_frame_tag task_template do %>
+    <% color = !task_template.active? ? "skip" : task_template.task_category.color %>
+    <div class="card task-template" style="border-color:var(--<%= color %>-dark);background-color:var(--<%= color %>-light);color:var(--<%= color %>-dark);">
+        <div style="color:var(--<%= color %>);"><%= task_template.task_category.label %></div>
+        <%= form_with model: task_template do |form| %>
+            <div>
+                <%= form.label :first_date, "From" %>
+                <%= form.date_field :first_date, style:"background-color:var(--#{color}-dark);color:var(--#{color}-light);", class: "date-field", onchange: "this.form.requestSubmit()" %>
+            </div>
+            <div>
+                <%= form.label :end_date, "To" %>
+                <%= form.date_field :end_date, style:"background-color:var(--#{color}-dark);color:var(--#{color}-light);", class: "date-field", onchange: "this.form.requestSubmit()" %>
+            </div>
+            <div>
+                <%= form.label :days_to_complete, "Window" %>
+                <%= form.number_field :days_to_complete, step: 1, minimum: 1, class: "number-field", onchange: "this.form.requestSubmit()" %>
+            </div>
+            <div>
+                <%= form.label :repeat_days, "Repeat" %>
+                <%= form.number_field :repeat_days, step: 1, minimum: 0, class: "number-field", onchange: "this.form.requestSubmit()" %>
+            </div>
+        <% end %>
+        <div>goal_type: <%= task_template.goal_type %></div>
+        <%= form_with model: task_template do |form| %>
+            <%= form.hidden_field :active, value: !task_template.active %>
+            <%= form.button class: "action-button", style: "background-color:var(--#{color}-dark);color:var(--#{color}-light)" do %>
+                <%= task_template.active? ? "Deactivate" : "Activate" %>
+            <% end %>
+        <% end %>
+        <%= button_to "Delete", task_template, method: :delete, class: "action-button", style: "background-color:var(--#{color}-dark);color:var(--#{color}-light)", data: { turbo_method: :delete, turbo_confirm: "Are you sure?" } %>
+    </div>
+<% end %>
